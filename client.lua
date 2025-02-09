@@ -20,7 +20,7 @@ local function toggleIDDisplay()
         CreateThread(function()
             while showingIDs do
                 local playerPed = cache.ped
-                local playerCoords = GetEntityCoords(playerPed)
+                local playerCoords = cache.coords  
                 local players = GetActivePlayers()
 
                 for i = 1, #players do
@@ -28,7 +28,7 @@ local function toggleIDDisplay()
                     local targetPed = GetPlayerPed(player)
 
                     if targetPed then
-                        local targetCoords = GetEntityCoords(targetPed)
+                        local targetCoords = GetEntityCoords(targetPed)  
                         local dist = #(playerCoords - targetCoords)
 
                         if (dist < Config.MaxDistance or targetPed == playerPed) and HasEntityClearLosToEntity(playerPed, targetPed, 17) then
