@@ -21,7 +21,7 @@ local function toggleIDDisplay()
             while showingIDs do
                 local playerPed = cache.ped
                 local playerCoords = GetEntityCoords(playerPed)
-                local players = GetActivePlayers() 
+                local players = GetActivePlayers()
 
                 for i = 1, #players do
                     local player = players[i]
@@ -32,8 +32,10 @@ local function toggleIDDisplay()
                         local dist = #(playerCoords - targetCoords)
 
                         if dist < Config.MaxDistance or targetPed == playerPed then
-                            draw3DText(targetCoords + vector3(0.0, 0.0, Config.Text.offsetZ),
-                                ("ID: %d"):format(GetPlayerServerId(player)))
+                            if HasEntityClearLosToEntity(playerPed, targetPed, 17) then  
+                                draw3DText(targetCoords + vector3(0.0, 0.0, Config.Text.offsetZ),
+                                    ("ID: %d"):format(GetPlayerServerId(player)))
+                            end
                         end
                     end
                 end
