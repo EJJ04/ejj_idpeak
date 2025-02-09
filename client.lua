@@ -31,11 +31,9 @@ local function toggleIDDisplay()
                         local targetCoords = GetEntityCoords(targetPed)
                         local dist = #(playerCoords - targetCoords)
 
-                        if dist < Config.MaxDistance or targetPed == playerPed then
-                            if HasEntityClearLosToEntity(playerPed, targetPed, 17) then  
-                                draw3DText(targetCoords + vector3(0.0, 0.0, Config.Text.offsetZ),
-                                    ("ID: %d"):format(GetPlayerServerId(player)))
-                            end
+                        if (dist < Config.MaxDistance or targetPed == playerPed) and HasEntityClearLosToEntity(playerPed, targetPed, 17) then
+                            draw3DText(targetCoords + vector3(0.0, 0.0, Config.Text.offsetZ),
+                                ("ID: %d"):format(GetPlayerServerId(player)))
                         end
                     end
                 end
