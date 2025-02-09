@@ -1,7 +1,7 @@
 local showingIDs = false
 
 local function draw3DText(coords, text)
-    SetDrawOrigin(coords.x, coords.y, coords.z, 0)
+    SetDrawOrigin(coords.x, coords.y, coords.z - 0.2, 0)
     SetTextScale(Config.Text.scale, Config.Text.scale)
     SetTextFont(Config.Text.font)
     SetTextProportional(true)
@@ -20,7 +20,7 @@ local function toggleIDDisplay()
         CreateThread(function()
             while showingIDs do
                 local playerPed = cache.ped
-                local playerCoords = cache.coords  
+                local playerCoords = GetEntityCoords(playerPed)
                 local players = GetActivePlayers()
 
                 for i = 1, #players do
@@ -28,13 +28,14 @@ local function toggleIDDisplay()
                     local targetPed = GetPlayerPed(player)
 
                     if targetPed then
-                        local targetCoords = GetEntityCoords(targetPed)  
+                        local targetCoords = GetEntityCoords(targetPed)
                         local dist = Vdist(playerCoords, targetCoords)
 
-                        if (dist < Config.MaxDistance or targetPed == playerPed) and HasEntityClearLosToEntity(playerPed, targetPed, 17) then
+                        if targetPed == playerPed or (dist <= Config.MaxDistance and HasEntityClearLosToEntity(playerPed, targetPed, 17)) then
+                            local serverId = GetPlayerServerId(player)  
                             draw3DText(targetCoords + vector3(0.0, 0.0, Config.Text.offsetZ),
-                                ("ID: %d"):format(GetPlayerServerId(player)))
-                        end
+                                ("ID: %d"):format(serverId))
+                        end                        
                     end
                 end
 
